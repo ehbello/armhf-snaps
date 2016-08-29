@@ -1,3 +1,7 @@
+*.snap
+*/MLO
+*/u-boot.img
+*/uboot.env
 u-boot/
 linux/
 device/assets/dtb*
