@@ -1,7 +1,37 @@
-# where to load initrd
+# This is a snappy variables and boot logic file and is entirely generated and
+# managed by Snappy. Modifications may break boot
+######
+# where to load
 initrd_addr=0x88080000
 mmcpart=1
-mmcrootfstype=ext4 rootwait
+mmcargs=setenv bootargs console=${console} ${optargs} root=${mmcroot} rw rootfstype=${mmcrootfstype}
+
+# functions to load kernel, initrd and fdt from various env values
+loadfiles=run loadkernel; run loadinitrd; run loadfdt
+loadkernel=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${snappy_kernel}/${kernel_file}
+loadinitrd=load mmc ${mmcdev}:${mmcpart} ${initrd_addr} ${snappy_kernel}/${initrd_file}; setenv initrd_size ${filesize}
+loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${snappy_kernel}/dtbs/${fdtfile}
+
+# standard kernel and initrd file names; NB: fdtfile is set early from bootcmd
+kernel_file=vmlinuz
+initrd_file=initrd.img
+
+# extra kernel cmdline args, set via mmcroot
+snappy_cmdline=init=/lib/systemd/systemd ro panic=-1 fixrtc
+
+# boot logic
+snappy_trial_boot=0
+# either "regular" (normal boot) or "try" when trying a new version
+snappy_mode=regular
+# if we're trying a new version, check if stamp file is already there to revert
+# to other version
+snappy_boot=if test "${snappy_mode}" = "try"; then if test "${snappy_trial_boot}" = "1"; then setenv snappy_os "${snappy_good_os}"; setenv snappy_kernel "${snappy_good_kernel}"; saveenv; else setenv snappy_trial_boot 1; saveenv; fi; fi; run loadfiles; setenv mmcroot /dev/disk/by-label/writable ${snappy_cmdline} snappy_os=${snappy_os} snappy_kernel=${snappy_kernel}; run mmcargs; bootz ${loadaddr} ${initrd_addr}:${initrd_size} ${fdtaddr}
 
 # load Snappy environment and call into Snappy boot after processing this file
-uenvcmd=load mmc 0 ${loadaddr} snappy-system.txt; env import -t $loadaddr $filesize; run findfdt; run snappy_boot
+uenvcmd=env import -t $loadaddr $filesize; run findfdt; run snappy_boot
+
+# workaround
+snappy_good_kernel=linux-panda_0.snap
+snappy_good_os=ubuntu-core_120.snap
+snappy_kernel=linux-panda_0.snap
+snappy_os=ubuntu-core_120.snap

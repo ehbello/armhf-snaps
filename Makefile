@@ -22,12 +22,12 @@ MAKEOVERRIDES =
 .SUFFIXES:
 
 .PHONY: all uboot clean-uboot gadget clean-gadget
-all: $(MACHINE).snap
-clean: clean-uboot clean-gadget
+all: $(MACHINE).snap $(MACHINE)/uboot.env
+clean: clean-uboot clean-uboot-env clean-gadget
 
 #================================== GADGET =======================================
 gadget: $(MACHINE).snap
-$(MACHINE).snap: uboot
+$(MACHINE).snap: uboot $(MACHINE)/uboot.env
 	@snapcraft snap $(MACHINE)
 
 clean-gadget:
@@ -42,6 +42,9 @@ endif
 UBOOT_OUT_DIR := $(PWD)/${MACHINE}
 uboot: $(UBOOT_OUT_DIR)/MLO $(UBOOT_OUT_DIR)/u-boot.img
 $(UBOOT_OUT_DIR)/MLO $(UBOOT_OUT_DIR)/u-boot.img: u-boot-output.intermediate
+
+$(MACHINE)/uboot.env: $(MACHINE)/uboot.env.in
+	@mkenvimage -r -s 131072 -o $(MACHINE)/uboot.env $(MACHINE)/uboot.env.in
 
 # Check-out u-boot (naively assume that if the directory exists, u-boot is checked out)
 $(UBOOT_SRC_DIR):
@@ -60,6 +63,9 @@ u-boot-output.intermediate: $(UBOOT_SRC_DIR)/.config $(shell find $(UBOOT_SRC_DI
 clean-uboot:
 	@-$(MAKE) -C $(UBOOT_SRC_DIR) CROSS_COMPILE=$(CROSS_COMPILE) distclean
 	@-rm -f $(UBOOT_OUT_DIR)/MLO $(UBOOT_OUT_DIR)/u-boot.img
+
+clean-uboot-env:
+	@-rm -f $(MACHINE)/uboot.env
 
 # This is experimental work-in-progress---ignore it for now
 ##================================ initrd ======================================

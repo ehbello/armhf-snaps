@@ -29,6 +29,7 @@ gadget:
         - path: uEnv.txt
         - path: MLO
         - path: u-boot.img
+        - path: uboot.env
       raw-files:
         - path: MLO
           offset: 131072 # @ 128kB
