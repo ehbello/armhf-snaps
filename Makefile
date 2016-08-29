@@ -8,7 +8,7 @@ CROSS_COMPILE := arm-linux-gnueabihf-
 ARCH := arm
 
 UBOOT_SRC_DIR := $(PWD)/u-boot
-UBOOT_BRANCH := v2015.04
+UBOOT_BRANCH := v2016.07
 
 UBOOT_CONFIG_overo := omap3_overo_defconfig
 UBOOT_CONFIG_duovero := duovero_defconfig
@@ -21,17 +21,16 @@ MAKEOVERRIDES =
 # prevent built-in rules---we're not using them
 .SUFFIXES:
 
-.PHONY: all uboot clean-uboot oem clean-oem
+.PHONY: all uboot clean-uboot gadget clean-gadget
 all: $(MACHINE).snap
-clean: clean-uboot clean-oem
+clean: clean-uboot clean-gadget
 
-#================================== OEM =======================================
-oem: $(MACHINE).snap
+#================================== GADGET =======================================
+gadget: $(MACHINE).snap
 $(MACHINE).snap: uboot
-	@(cd $(MACHINE) && snappy build)
-	@cp $(MACHINE)/$(MACHINE)*.snap $(MACHINE).snap
+	@snapcraft snap $(MACHINE)
 
-clean-oem:
+clean-gadget:
 	@rm -f $(MACHINE)/$(MACHINE)*.snap $(MACHINE).snap
 
 #================================= UBOOT ======================================
@@ -46,11 +45,11 @@ $(UBOOT_OUT_DIR)/MLO $(UBOOT_OUT_DIR)/u-boot.img: u-boot-output.intermediate
 
 # Check-out u-boot (naively assume that if the directory exists, u-boot is checked out)
 $(UBOOT_SRC_DIR):
-	@git clone git://github.com/gumstix/u-boot.git --depth 1 -b $(UBOOT_BRANCH) $(UBOOT_SRC_DIR)
+	@git clone https://github.com/u-boot/u-boot.git --depth 1 -b $(UBOOT_BRANCH) $(UBOOT_SRC_DIR)
 
 # configure u-boot
 $(UBOOT_SRC_DIR)/.config: | $(UBOOT_SRC_DIR)
-	@$(MAKE) -C $(UBOOT_SRC_DIR) CROSS_COMPILE=$(CROSS_COMPILE) $(UBOOT_CONFIG)
+	@$(MAKE) -C $(UBOOT_SRC_DIR) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(UBOOT_CONFIG)
 
 # if any file in the u-boot directory changes, build
 .INTERMEDIATE: u-boot-output.intermediate
@@ -61,7 +60,6 @@ u-boot-output.intermediate: $(UBOOT_SRC_DIR)/.config $(shell find $(UBOOT_SRC_DI
 clean-uboot:
 	@-$(MAKE) -C $(UBOOT_SRC_DIR) CROSS_COMPILE=$(CROSS_COMPILE) distclean
 	@-rm -f $(UBOOT_OUT_DIR)/MLO $(UBOOT_OUT_DIR)/u-boot.img
-
 
 # This is experimental work-in-progress---ignore it for now
 ##================================ initrd ======================================
