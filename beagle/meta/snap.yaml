@@ -1,27 +1,28 @@
-name: overo
-vendor: Gumstix, Inc. <ash@gumstix.com>
-icon: meta/gumstix.png
-version: 0.1
-type: oem
+name: beagle
+vendor: Enrique Hernández Bello <ehbello@gmail.com>
+icon: meta/beagle.png
+license: meta/readme.md
+version: 0.2
+type: gadget
 
 config:
   ubuntu-core:
-    hostname: overo
+    hostname: beagle
     services:
         - name: ssh
           enabled: true
 
-oem:
+gadget:
   branding:
-    name: Gumstix Overo COM
-    logo: meta/gumstix.png
+    name: BeagleBoard
+    logo: meta/beagle.png
   software:
     preinstalled:
         - webdm
   hardware:
-    platform: overo
+    platform: beagle
     architecture: armhf
-    partition-layout: system-AB
+    partition-layout: minimal
     bootloader: u-boot
     boot-assets:
       files:

@@ -1,0 +1,34 @@
+name: pepper
+vendor: Enrique Hernández Bello <ehbello@gmail.com>
+icon: meta/gumstix.png
+license: meta/readme.md
+version: 0.2
+type: gadget
+
+config:
+  ubuntu-core:
+    hostname: pepper
+    services:
+        - name: ssh
+          enabled: true
+
+gadget:
+  branding:
+    name: Gumstix Pepper
+    logo: meta/gumstix.png
+  software:
+    preinstalled:
+        - webdm
+  hardware:
+    platform: pepper
+    architecture: armhf
+    partition-layout: minimal
+    bootloader: u-boot
+    boot-assets:
+      files:
+        - path: uEnv.txt
+      raw-files:
+        - path: MLO
+          offset: 131072 # @ 128kB
+        - path: u-boot.img
+          offset: 393216 # 384kB

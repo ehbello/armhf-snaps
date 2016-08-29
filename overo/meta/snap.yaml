@@ -1,35 +1,31 @@
-name: duovero
-vendor: Gumstix, Inc. <ash@gumstix.com>
+name: overo
+vendor: Enrique Hernández Bello <ehbello@gmail.com>
 icon: meta/gumstix.png
-version: 0.1
-type: oem
+license: meta/readme.md
+version: 0.2
+type: gadget
 
 config:
   ubuntu-core:
-    hostname: duovero
+    hostname: overo
     services:
         - name: ssh
           enabled: true
 
-oem:
+gadget:
   branding:
-    name: Gumstix DuoVero COM
+    name: Gumstix Overo COM
     logo: meta/gumstix.png
   software:
     preinstalled:
         - webdm
   hardware:
-    platform: duovero
+    platform: overo
     architecture: armhf
-    partition-layout: system-AB
+    partition-layout: minimal
     bootloader: u-boot
     boot-assets:
       files:
         - path: uEnv.txt
         - path: MLO
         - path: u-boot.img
-      raw-files:
-        - path: MLO
-          offset: 131072 # @ 128kB
-        - path: u-boot.img
-          offset: 393216 # @ 384kB

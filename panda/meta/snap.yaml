@@ -1,8 +1,9 @@
 name: panda
-vendor: Gumstix, Inc. <ash@gumstix.com>
+vendor: Enrique Hernández Bello <ehbello@gmail.com>
 icon: meta/panda.png
-version: 0.1
-type: oem
+license: meta/readme.md
+version: 0.2
+type: gadget
 
 config:
   ubuntu-core:
@@ -11,7 +12,7 @@ config:
         - name: ssh
           enabled: true
 
-oem:
+gadget:
   branding:
     name: PandaBoard
     logo: meta/panda.png
@@ -21,7 +22,7 @@ oem:
   hardware:
     platform: panda
     architecture: armhf
-    partition-layout: system-AB
+    partition-layout: minimal
     bootloader: u-boot
     boot-assets:
       files:
