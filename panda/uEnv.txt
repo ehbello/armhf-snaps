@@ -6,11 +6,12 @@
 ######
 # where to load
 initrd_addr=0x88080000
+mmcdev=0
 mmcpart=1
-mmcargs=setenv bootargs console=${console} ${optargs} root=${mmcroot} rw rootfstype=${mmcrootfstype}
+args_mmc=setenv bootargs console=${console} ${optargs} root=${mmcroot} rw rootfstype=${mmcrootfstype}
 
 # functions to load kernel, initrd and fdt from various env values
-loadfiles=run loadkernel; run loadinitrd; run loadfdt
+loadfiles=run loadimage; run loadinitrd; run loadfdt
 loadkernel=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${snappy_kernel}/${kernel_file}
 loadinitrd=load mmc ${mmcdev}:${mmcpart} ${initrd_addr} ${snappy_kernel}/${initrd_file}; setenv initrd_size ${filesize}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${snappy_kernel}/dtbs/${fdtfile}
