@@ -1,3 +1,6 @@
+# This file is a workaround to a bug caused by ubuntu-device-flash that
+# makes a uboot.env file with a bad CRC.
+
 # This is a snappy variables and boot logic file and is entirely generated and
 # managed by Snappy. Modifications may break boot
 ######
@@ -17,7 +20,7 @@ kernel_file=vmlinuz
 initrd_file=initrd.img
 
 # extra kernel cmdline args, set via mmcroot
-snappy_cmdline=init=/lib/systemd/systemd ro panic=-1 fixrtc
+snappy_cmdline=net.ifnames=0 init=/lib/systemd/systemd ro panic=-1 fixrtc
 
 # boot logic
 snappy_trial_boot=0
@@ -25,13 +28,13 @@ snappy_trial_boot=0
 snappy_mode=regular
 # if we're trying a new version, check if stamp file is already there to revert
 # to other version
-snappy_boot=if test "${snappy_mode}" = "try"; then if test "${snappy_trial_boot}" = "1"; then setenv snappy_os "${snappy_good_os}"; setenv snappy_kernel "${snappy_good_kernel}"; saveenv; else setenv snappy_trial_boot 1; saveenv; fi; fi; run loadfiles; setenv mmcroot /dev/disk/by-label/writable ${snappy_cmdline} snappy_os=${snappy_os} snappy_kernel=${snappy_kernel}; run mmcargs; bootz ${loadaddr} ${initrd_addr}:${initrd_size} ${fdtaddr}
+snappy_boot=if test "${snappy_mode}" = "try"; then if test "${snappy_trial_boot}" = "1"; then setenv snappy_os "${snappy_good_os}"; setenv snappy_kernel "${snappy_good_kernel}"; saveenv; else setenv snappy_trial_boot 1; saveenv; fi; fi; run loadfiles; setenv mmcroot "/dev/disk/by-label/writable ${snappy_cmdline} snap_core=${snappy_os} snap_kernel=${snappy_kernel}"; run args_mmc; bootz ${loadaddr} ${initrd_addr}:${initrd_size} ${fdtaddr}
 
 # load Snappy environment and call into Snappy boot after processing this file
 uenvcmd=env import -t $loadaddr $filesize; run findfdt; run snappy_boot
 
 # workaround
 snappy_good_kernel=linux-panda_0.snap
-snappy_good_os=ubuntu-core_120.snap
+snappy_good_os=ubuntu-core_449.snap
 snappy_kernel=linux-panda_0.snap
-snappy_os=ubuntu-core_120.snap
+snappy_os=ubuntu-core_449.snap
