@@ -52,6 +52,7 @@ $(UBOOT_SRC_DIR):
 
 # configure u-boot
 $(UBOOT_SRC_DIR)/.config: | $(UBOOT_SRC_DIR)
+	@patch -d $(UBOOT_SRC_DIR) -f -p1 -r - -i ../snappy_uboot.patch || true
 	@$(MAKE) -C $(UBOOT_SRC_DIR) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(UBOOT_CONFIG)
 
 # if any file in the u-boot directory changes, build
@@ -62,6 +63,7 @@ u-boot-output.intermediate: $(UBOOT_SRC_DIR)/.config $(shell find $(UBOOT_SRC_DI
 
 clean-uboot:
 	@-$(MAKE) -C $(UBOOT_SRC_DIR) CROSS_COMPILE=$(CROSS_COMPILE) distclean
+	@patch -d $(UBOOT_SRC_DIR) -R -f -p1 -r - -i ../snappy_uboot.patch || true
 	@-rm -f $(UBOOT_OUT_DIR)/MLO $(UBOOT_OUT_DIR)/u-boot.img
 
 clean-uboot-env:

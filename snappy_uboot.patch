@@ -1,0 +1,79 @@
+diff --git a/include/configs/duovero.h b/include/configs/duovero.h
+index 98afe27..17421f0 100644
+--- a/include/configs/duovero.h
++++ b/include/configs/duovero.h
+@@ -50,5 +50,9 @@
+ #define CONFIG_ENV_IS_NOWHERE
+ 
+ #define CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
++#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
++
++/* Shell */
++#define CONFIG_SUPPORT_RAW_INITRD
+ 
+ #endif /* __CONFIG_DUOVERO_H */
+diff --git a/include/configs/omap3_beagle.h b/include/configs/omap3_beagle.h
+index 4dbe2b6..4e7f17b 100644
+--- a/include/configs/omap3_beagle.h
++++ b/include/configs/omap3_beagle.h
+@@ -272,11 +272,15 @@
+ #define CONFIG_SYS_ENV_SECT_SIZE	(128 << 10)	/* 128 KiB */
+ #define CONFIG_ENV_OFFSET		SMNAND_ENV_OFFSET
+ #define CONFIG_ENV_ADDR			SMNAND_ENV_OFFSET
++#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
+ 
+ #define CONFIG_OMAP3_SPI
+ 
+ #define CONFIG_SYS_CACHELINE_SIZE	64
+ 
++/* Shell */
++#define CONFIG_SUPPORT_RAW_INITRD
++
+ /* Defines for SPL */
+ #define CONFIG_SPL_OMAP3_ID_NAND
+ 
+diff --git a/include/configs/omap3_overo.h b/include/configs/omap3_overo.h
+index fbd0c2a..1248586 100644
+--- a/include/configs/omap3_overo.h
++++ b/include/configs/omap3_overo.h
+@@ -204,6 +204,10 @@
+ #define CONFIG_SYS_ENV_SECT_SIZE	(128 << 10)	/* 128 KiB */
+ #define CONFIG_ENV_OFFSET		SMNAND_ENV_OFFSET
+ #define CONFIG_ENV_ADDR			SMNAND_ENV_OFFSET
++#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
++
++/* Shell */
++#define CONFIG_SUPPORT_RAW_INITRD
+ 
+ /* Configure SMSC9211 ethernet */
+ #if defined(CONFIG_CMD_NET)
+diff --git a/include/configs/omap4_panda.h b/include/configs/omap4_panda.h
+index 0d62ccd..6320608 100644
+--- a/include/configs/omap4_panda.h
++++ b/include/configs/omap4_panda.h
+@@ -44,5 +44,9 @@
+ #define FAT_ENV_DEVICE_AND_PART         "0:1"
+ #define FAT_ENV_FILE                    "uboot.env"
+ #define CONFIG_ENV_OVERWRITE
++#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
++
++/* Shell */
++#define CONFIG_SUPPORT_RAW_INITRD
+ 
+ #endif /* __CONFIG_PANDA_H */
+diff --git a/include/configs/pepper.h b/include/configs/pepper.h
+index 1bc8c4b..ecdf1d9 100644
+--- a/include/configs/pepper.h
++++ b/include/configs/pepper.h
+@@ -25,6 +25,11 @@
+ 
+ #define CONFIG_ENV_SIZE			(128 << 10)	/* 128 KiB */
+ #define CONFIG_ENV_IS_NOWHERE
++#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
++
++/* Shell */
++#define CONFIG_SUPPORT_RAW_INITRD
++
+ /* Display cpuinfo */
+ #define CONFIG_DISPLAY_CPUINFO
+ 
