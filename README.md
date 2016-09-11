@@ -77,45 +77,39 @@ Build and install the resulting *MLO* and *u-boot.img* files.
     $ make CROSS_COMPILE=arm-linux-gnueabihf-
     $ cp MLO u-boot.img ../<machine>/
 
+Boot built image and save default environment variables.
+
+	* Press any key to stop U-Boot autostart and run:
+
+	$ env default -a
+	$ saveenv
+
+Get plain text environment:
+	$ strings uboot.env > uboot.conf.in
+
+Make uenv image:
+	$ mkenvimage -r -s 131072 -o uboot.env uboot.env.in
+
 
 The Image File
 --------------
-**1. Download the only *ubuntu-device-flash* tool that works.**
+**1. Install latest *ubuntu-image* snap
 
-    $ sudo apt-get install -y ubuntu-device-flash
-    $ wget https://people.canonical.com/~mvo/all-snaps/ubuntu-device-flash
-      (md5:  e3c9900a99b567862f8651d0c2fef1c2)
-      (sha1: 9a19991244a02528c22fd2b7b4367673665d3ccd)
-    $ chmod +x ubuntu-device-flash
+    $ sudo snap install --channel=edge --devmode ubuntu-device-flash
 
 **2. Assembly a flashable image.**
 
 We'll use the *16.04* release and enable ssh as well *developer-mode* so we
 can install unsigned packages. Old Snappy's rollback system is still not
 supported. Instead of this, a minimal system with only one OS partition will be
-defined. Image must be greather equal than 4GB. If card has free space, OS
-partition will be resized on first boot.
+defined. Image would be equal to 4GB. If card has free space, OS partition will
+be resized on first boot.
 
 
-    $ export UBUNTU_DEVICE_FLASH_IGNORE_UNSTABLE_GADGET_DEFINITION=true
-    $ sudo ./ubuntu-device-flash -v core -o <machine>.img \
-                                         --size 4 \
-                                         --gadget <machine>_*_all.snap \
-                                         --kernel linux-armhf \
-                                         --os ubuntu-core \
-                                         --developer-mode \
-                                         --channel=edge 16
-
-If you get the followin error:
-
-> failed to install "[machine]" from "edge": [machine] failed to
->   install: exit status 2
-
-Runs following [hack][2] and retry:
-
-    $ sudo ln -s /bin/true /usr/local/bin/udevadm
-
-[2]: https://lists.ubuntu.com/archives/snappy-devel/2016-April/001736.html
+	$ UBUNTU_IMAGE_SKIP_COPY_UNVERIFIED_MODEL=1 ubuntu-image <model>.assertion \
+										 -c edge \
+										 -o panda.img \
+										 --extra-snaps <machine>.snap
 
 <!---
 
@@ -178,7 +172,7 @@ navigate to http://*machine-name*.local
 
 Kudos and Caveats
 -----------------
-In making this repository, [there][3] [were][4] [many][5] [useful][6]
+In making this repository, there [were][4] [many][5] [useful][6]
 [references][7]. Special thanks to [Gumstix guys][8] for their work in [previous][9]
 releases.
 
@@ -196,7 +190,6 @@ The most important:
    PandaBoard image, so if you find things that are broken or have suggestions,
    leave a comment, raise an issue, or best of all, send a pull request!
 
-[3]: https://code.launchpad.net/~mvo
 [4]: https://developer.ubuntu.com/en/snappy/guides/porting/
 [5]: https://wiki.ubuntu.com/SecurityTeam/PublicationNotes#Ubuntu_Core
 [6]: https://lists.ubuntu.com/archives/snappy-devel/2016-January/001400.html
