@@ -2,35 +2,6 @@ name: duovero
 vendor: Enrique Hernández Bello <ehbello@gmail.com>
 icon: meta/gumstix.png
 license: meta/readme.md
-version: 0.2
+version: 16.04-0.3
 type: gadget
-
-config:
-  ubuntu-core:
-    hostname: duovero
-    services:
-        - name: ssh
-          enabled: true
-
-gadget:
-  branding:
-    name: Gumstix DuoVero COM
-    logo: meta/gumstix.png
-  software:
-    preinstalled:
-        - webdm
-  hardware:
-    platform: duovero
-    architecture: armhf
-    partition-layout: minimal
-    bootloader: u-boot
-    boot-assets:
-      files:
-        - path: uEnv.txt
-        - path: MLO
-        - path: u-boot.img
-      raw-files:
-        - path: MLO
-          offset: 131072 # @ 128kB
-        - path: u-boot.img
-          offset: 393216 # @ 384kB
+architectures: [armhf]

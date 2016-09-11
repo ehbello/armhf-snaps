@@ -1,0 +1,27 @@
+device-tree-origin: kernel
+volumes:
+  panda:
+    schema: mbr
+    bootloader: u-boot
+    structure:
+      - type: mbr
+        size: 131072
+        offset-write: 131072
+        content:
+          - image: MLO
+      - type: mbr
+        size: 393216
+        offset-write: 393216
+        content:
+          - image: u-boot.img
+      - type: 0C
+        filesystem: vfat
+        filesystem-label: system-boot
+        size: 128M
+        content:
+          - source: uEnv.txt
+            target: .
+          - source: MLO
+            target: .
+          - source: u-boot.img
+            target: .

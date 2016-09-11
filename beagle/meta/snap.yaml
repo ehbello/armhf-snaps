@@ -2,30 +2,6 @@ name: beagle
 vendor: Enrique Hernández Bello <ehbello@gmail.com>
 icon: meta/beagle.png
 license: meta/readme.md
-version: 0.2
+version: 16.04-0.3
 type: gadget
-
-config:
-  ubuntu-core:
-    hostname: beagle
-    services:
-        - name: ssh
-          enabled: true
-
-gadget:
-  branding:
-    name: BeagleBoard
-    logo: meta/beagle.png
-  software:
-    preinstalled:
-        - webdm
-  hardware:
-    platform: beagle
-    architecture: armhf
-    partition-layout: minimal
-    bootloader: u-boot
-    boot-assets:
-      files:
-        - path: uEnv.txt
-        - path: MLO
-        - path: u-boot.img
+architectures: [armhf]

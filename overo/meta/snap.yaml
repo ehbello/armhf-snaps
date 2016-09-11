@@ -2,30 +2,6 @@ name: overo
 vendor: Enrique Hernández Bello <ehbello@gmail.com>
 icon: meta/gumstix.png
 license: meta/readme.md
-version: 0.2
+version: 16.04-0.3
 type: gadget
-
-config:
-  ubuntu-core:
-    hostname: overo
-    services:
-        - name: ssh
-          enabled: true
-
-gadget:
-  branding:
-    name: Gumstix Overo COM
-    logo: meta/gumstix.png
-  software:
-    preinstalled:
-        - webdm
-  hardware:
-    platform: overo
-    architecture: armhf
-    partition-layout: minimal
-    bootloader: u-boot
-    boot-assets:
-      files:
-        - path: uEnv.txt
-        - path: MLO
-        - path: u-boot.img
+architectures: [armhf]
