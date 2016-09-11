@@ -79,10 +79,11 @@ Build and install the resulting *MLO* and *u-boot.img* files.
 
 Boot built image and save default environment variables.
 
-	* Press any key to stop U-Boot autostart and run:
+* Press any key to stop U-Boot autostart and run:
 
-	$ env default -a
-	$ saveenv
+
+    $ env default -a
+    $ saveenv
 
 Get plain text environment:
 	$ strings uboot.env > uboot.conf.in
@@ -93,11 +94,26 @@ Make uenv image:
 
 The Image File
 --------------
-**1. Install latest *ubuntu-image* snap
+**1. Install latest *ubuntu-image* snap**
 
     $ sudo snap install --channel=edge --devmode ubuntu-device-flash
 
-**2. Assembly a flashable image.**
+**2. Create a <machine>.assertion file similar to this content:**
+
+    type: model
+    authority-id: nobody
+    series: 16 
+    brand-id: nobody
+    model: <machine>
+    gadget: <machine>
+    kernel: linux-armhf
+    architecture: armhf
+    timestamp: 2016-08-31T00:00:00.0Z
+    sign-key-sha3-384: 9tydnLa6MTJ-jaQTFUXEwHl1yRx7ZS4K5cyFDhYDcPzhS7uyEkDxdUjg9g08BtNn
+
+    openpgp 2cln
+
+**3. Assembly a flashable image.**
 
 We'll use the *16.04* release and enable ssh as well *developer-mode* so we
 can install unsigned packages. Old Snappy's rollback system is still not
@@ -106,7 +122,7 @@ defined. Image would be equal to 4GB. If card has free space, OS partition will
 be resized on first boot.
 
 
-	$ UBUNTU_IMAGE_SKIP_COPY_UNVERIFIED_MODEL=1 ubuntu-image <model>.assertion \
+	$ UBUNTU_IMAGE_SKIP_COPY_UNVERIFIED_MODEL=1 ubuntu-image <machine>.assertion \
 										 -c edge \
 										 -o panda.img \
 										 --extra-snaps <machine>.snap
@@ -172,7 +188,7 @@ navigate to http://*machine-name*.local
 
 Kudos and Caveats
 -----------------
-In making this repository, there [were][4] [many][5] [useful][6]
+In making this repository, [there][3] [were][4] [many][5] [useful][6]
 [references][7]. Special thanks to [Gumstix guys][8] for their work in [previous][9]
 releases.
 
@@ -190,6 +206,7 @@ The most important:
    PandaBoard image, so if you find things that are broken or have suggestions,
    leave a comment, raise an issue, or best of all, send a pull request!
 
+[3]: https://lists.snapcraft.io/archives/devices/2016-September/000005.html
 [4]: https://developer.ubuntu.com/en/snappy/guides/porting/
 [5]: https://wiki.ubuntu.com/SecurityTeam/PublicationNotes#Ubuntu_Core
 [6]: https://lists.ubuntu.com/archives/snappy-devel/2016-January/001400.html
