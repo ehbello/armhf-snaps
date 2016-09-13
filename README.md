@@ -96,7 +96,7 @@ The Image File
 --------------
 **1. Install latest *ubuntu-image* snap**
 
-    $ sudo snap install --channel=edge --devmode ubuntu-device-flash
+    $ sudo snap install --channel=edge --devmode ubuntu-image
 
 **2. Create a <machine>.assertion file similar to this content:**
 
